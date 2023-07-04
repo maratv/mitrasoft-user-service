@@ -6,6 +6,7 @@ import com.example.mitrasoftuserservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDate;
@@ -15,6 +16,9 @@ public class MitrasoftUserServiceApplication {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
     public static void main(String[] args) {
@@ -29,7 +33,7 @@ public class MitrasoftUserServiceApplication {
                 .email("404@bk.ru")
                 .firstName("Marat")
                 .lastName("Vakhitov")
-                .password("pass")
+                .password(passwordEncoder.encode("pass"))
                 .birthday(LocalDate.of(1988, 2, 22))
                 .role(UserRole.ADMIN)
                 .build();
@@ -40,7 +44,7 @@ public class MitrasoftUserServiceApplication {
                 .email("kuza@bk.ru")
                 .firstName("Tanya")
                 .lastName("Vakhitova")
-                .password("pass")
+                .password(passwordEncoder.encode("pass1"))
                 .birthday(LocalDate.of(1987, 7, 28))
 
                 .role(UserRole.USER)
