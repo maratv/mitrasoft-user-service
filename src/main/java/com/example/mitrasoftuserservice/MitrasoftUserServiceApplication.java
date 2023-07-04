@@ -6,10 +6,9 @@ import com.example.mitrasoftuserservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-import org.springframework.web.reactive.function.client.WebClient;
 
 import javax.annotation.PostConstruct;
+import java.time.LocalDate;
 
 @SpringBootApplication
 public class MitrasoftUserServiceApplication {
@@ -31,6 +30,7 @@ public class MitrasoftUserServiceApplication {
                 .firstName("Marat")
                 .lastName("Vakhitov")
                 .password("pass")
+                .birthday(LocalDate.of(1988, 2, 22))
                 .role(UserRole.ADMIN)
                 .build();
 
@@ -41,6 +41,8 @@ public class MitrasoftUserServiceApplication {
                 .firstName("Tanya")
                 .lastName("Vakhitova")
                 .password("pass")
+                .birthday(LocalDate.of(1987, 7, 28))
+
                 .role(UserRole.USER)
                 .build();
 

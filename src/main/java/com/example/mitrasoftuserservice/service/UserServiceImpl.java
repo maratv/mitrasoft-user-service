@@ -1,13 +1,13 @@
 package com.example.mitrasoftuserservice.service;
 
-import com.example.mitrasoftuserservice.dto.UserDto;
+import com.example.mitrasoftuserservice.dto.UserAuthDto;
 import com.example.mitrasoftuserservice.domain.User;
+import com.example.mitrasoftuserservice.exception.DataNotFoundException;
 import com.example.mitrasoftuserservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -18,7 +18,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getAllUsers() {
-        return userRepository.findAll();
+        return userRepository.findAll().stream()
+                .map(u -> {
+                    u.setPassword("***");
+                    return u;
+                })
+                .toList();
     }
 
     @Override
@@ -27,34 +32,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto getUserDtoByEmail(String email) {
+    public UserAuthDto getUserAuthDtoByEmail(String email) {
 
         Optional<User> optionalUser = userRepository.getUserByEmail(email);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-            UserDto userDto = UserDto.builder()
+            UserAuthDto userAuthDto = UserAuthDto.builder()
                     .email(user.getEmail())
                     .password(user.getPassword())
                     .role(user.getRole())
                     .build();
-            return userDto;
+            return userAuthDto;
         } else {
-            return null;
+            throw new DataNotFoundException("user with email '" + email + "' not found");
         }
-    }
-
-    @Override
-    public String getUserRole(UserDto userDto) {
-        Optional<User> optionalUser = userRepository.getUserByEmail(userDto.getEmail());
-        if (optionalUser.isPresent()) {
-            if (Objects.equals(userDto.getPassword(), optionalUser.get().getPassword())) {
-                return optionalUser.get().getRole().toString();
-            } else {
-                return "incorrect password";
-            }
-        }
-        return "user not found";
-
     }
 
 

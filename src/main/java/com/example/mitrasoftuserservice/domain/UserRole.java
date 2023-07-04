@@ -15,8 +15,4 @@ public enum UserRole {
         }
     }
 
-//    @Override
-//    public String toString() {
-//        return "UserRole{}";
-//    }
 }

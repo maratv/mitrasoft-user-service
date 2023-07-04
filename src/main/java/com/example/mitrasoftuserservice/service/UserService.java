@@ -1,6 +1,6 @@
 package com.example.mitrasoftuserservice.service;
 
-import com.example.mitrasoftuserservice.dto.UserDto;
+import com.example.mitrasoftuserservice.dto.UserAuthDto;
 import com.example.mitrasoftuserservice.domain.User;
 
 import java.util.List;
@@ -12,8 +12,8 @@ public interface UserService {
 
     Optional<User> getUserByEmail(String email);
 
-    UserDto getUserDtoByEmail(String email);
+    UserAuthDto getUserAuthDtoByEmail(String email);
 
-    String getUserRole(UserDto userDto);
+
 
 }
