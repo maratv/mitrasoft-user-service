@@ -10,7 +10,7 @@ import static org.mockito.Mockito.when;
 import com.example.mitrasoftuserservice.domain.User;
 import com.example.mitrasoftuserservice.domain.UserRole;
 import com.example.mitrasoftuserservice.dto.UserAuthDto;
-import com.example.mitrasoftuserservice.exception.DataNotFoundException;
+import com.example.mitrasoftuserservice.exception.SourceNotFoundException;
 import com.example.mitrasoftuserservice.repository.UserRepository;
 
 import java.time.LocalDate;
@@ -102,8 +102,8 @@ class UserServiceImplTest {
      */
     @Test
     void testGetAllUsers4() {
-        when(userRepository.findAll()).thenThrow(new DataNotFoundException("An error occurred"));
-        assertThrows(DataNotFoundException.class, () -> userServiceImpl.getAllUsers());
+        when(userRepository.findAll()).thenThrow(new SourceNotFoundException("An error occurred"));
+        assertThrows(SourceNotFoundException.class, () -> userServiceImpl.getAllUsers());
         verify(userRepository).findAll();
     }
 
@@ -134,8 +134,8 @@ class UserServiceImplTest {
     @Test
     void testGetUserByEmail2() {
         when(userRepository.getUserByEmail(Mockito.<String>any()))
-                .thenThrow(new DataNotFoundException("An error occurred"));
-        assertThrows(DataNotFoundException.class, () -> userServiceImpl.getUserByEmail("jane.doe@example.org"));
+                .thenThrow(new SourceNotFoundException("An error occurred"));
+        assertThrows(SourceNotFoundException.class, () -> userServiceImpl.getUserByEmail("jane.doe@example.org"));
         verify(userRepository).getUserByEmail(Mockito.<String>any());
     }
 
@@ -167,7 +167,7 @@ class UserServiceImplTest {
     @Test
     void testGetUserAuthDtoByEmail2() {
         when(userRepository.getUserByEmail(Mockito.<String>any())).thenReturn(Optional.empty());
-        assertThrows(DataNotFoundException.class, () -> userServiceImpl.getUserAuthDtoByEmail("jane.doe@example.org"));
+        assertThrows(SourceNotFoundException.class, () -> userServiceImpl.getUserAuthDtoByEmail("jane.doe@example.org"));
         verify(userRepository).getUserByEmail(Mockito.<String>any());
     }
 
@@ -177,8 +177,8 @@ class UserServiceImplTest {
     @Test
     void testGetUserAuthDtoByEmail3() {
         when(userRepository.getUserByEmail(Mockito.<String>any()))
-                .thenThrow(new DataNotFoundException("An error occurred"));
-        assertThrows(DataNotFoundException.class, () -> userServiceImpl.getUserAuthDtoByEmail("jane.doe@example.org"));
+                .thenThrow(new SourceNotFoundException("An error occurred"));
+        assertThrows(SourceNotFoundException.class, () -> userServiceImpl.getUserAuthDtoByEmail("jane.doe@example.org"));
         verify(userRepository).getUserByEmail(Mockito.<String>any());
     }
 }
