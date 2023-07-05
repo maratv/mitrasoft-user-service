@@ -26,12 +26,11 @@ public class UserServiceImpl implements UserService {
         Optional<User> optionalUser = userRepository.getUserByEmail(email);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-            UserAuthDto userAuthDto = UserAuthDto.builder()
+            return UserAuthDto.builder()
                     .email(user.getEmail())
                     .password(user.getPassword())
                     .role(user.getRole())
                     .build();
-            return userAuthDto;
         } else {
             throw new SourceNotFoundException("user with email '" + email + "' not found");
         }
@@ -40,16 +39,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getAllUsers() {
         return userRepository.findAll().stream()
-                .map(u -> {
-                    u.setPassword("***");
-                    return u;
-                })
+                .peek(u -> u.setPassword("***"))
                 .toList();
     }
 
     @Override
-    public Optional<User> getUserByEmail(String email) {
-        return userRepository.getUserByEmail(email);
+    public User getUserByEmail(String email) {
+        Optional<User> optionalUser = userRepository.getUserByEmail(email);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            user.setPassword("***");
+            return user;
+        } else {
+            throw new SourceNotFoundException("user with email '" + email + "' not found");
+        }
     }
 
     @Override
@@ -61,14 +64,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> deleteUser(String email) {
+    public void deleteUser(String email) {
         Optional<User> optionalUser = userRepository.getUserByEmail(email);
         optionalUser.ifPresent(userRepository::delete);
-        return Optional.empty();
     }
 
     @Override
-    public Optional<User> editUser(String email, UserDto userDto) {
+    public User editUser(String email, UserDto userDto) {
         Optional<User> optionalUser = userRepository.getUserByEmail(email);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
@@ -78,28 +80,26 @@ public class UserServiceImpl implements UserService {
             user.setFirstName(userDto.getFirstName() != null ? userDto.getFirstName() : user.getFirstName());
             user.setLastName(userDto.getLastName() != null ? userDto.getLastName() : user.getLastName());
             user.setBirthday(userDto.getBirthday() != null ? userDto.getBirthday() : user.getBirthday());
-            return Optional.of(userRepository.save(user));
+            userRepository.save(user);
+            user.setPassword("***");
+            return user;
+        } else {
+            throw new SourceNotFoundException("user with email '" + email + "' not found");
         }
-        return Optional.empty();
     }
 
     @Override
-    public Optional<User> changeRole(String email, UserRole userRole) {
+    public User changeRole(String email, UserRole userRole) {
         Optional<User> optionalUser = userRepository.getUserByEmail(email);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             user.setRole(userRole);
-            return Optional.of(userRepository.save(user));
+            userRepository.save(user);
+            user.setPassword("***");
+            return user;
+        } else {
+            throw new SourceNotFoundException("user with email '" + email + "' not found");
         }
-        return Optional.empty();
     }
-
-    @Override
-    public UserRole getRole(String email) {
-        Optional<User> optionalUser = userRepository.getUserByEmail(email);
-
-        return optionalUser.get().getRole();
-    }
-
 }
 

@@ -25,35 +25,19 @@ public class UserControllerAdvice {
                 .body(errorHttpResponseDto);
     }
 
-//    @ExceptionHandler(value = {BankAccountNotFoundException.class})
-//    public ResponseEntity<ErrorHttpResponseDto> handleBankAccountNotFoundException(BankAccountNotFoundException ex) {
-//        var errorHttpResponseDto = new ErrorHttpResponseDto(HttpStatus.NOT_FOUND.value(), ex.getLocalizedMessage(), LocalDateTime.now());
-//        log.error("(GlobalControllerAdvice) BankAccountNotFoundException", ex);
-//        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .body(errorHttpResponseDto);
-//    }
-
     @ExceptionHandler(value = {DataAccessException.class})
     public ResponseEntity<ErrorHttpResponseDto> handleDataAccessException(DataAccessException ex) {
-        var errorHttpResponseDto = new ErrorHttpResponseDto(HttpStatus.BAD_REQUEST.value(), ex.getLocalizedMessage(), LocalDateTime.now());
+        var errorHttpResponseDto = new ErrorHttpResponseDto(HttpStatus.BAD_REQUEST.value(),
+                ex.getLocalizedMessage(), LocalDateTime.now());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(errorHttpResponseDto);
     }
 
-//    @ExceptionHandler(value = {InvalidAmountException.class})
-//    public ResponseEntity<ErrorHttpResponseDto> handleInvalidAmountException(InvalidAmountException ex) {
-//        var errorHttpResponseDto = new ErrorHttpResponseDto(HttpStatus.BAD_REQUEST.value(), ex.getLocalizedMessage(), LocalDateTime.now());
-//        log.error("(GlobalControllerAdvice) InvalidAmountException", ex);
-//        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .body(errorHttpResponseDto);
-//    }
-
     @ExceptionHandler(value = {IllegalArgumentException.class})
     public ResponseEntity<ErrorHttpResponseDto> handleIllegalArgumentException(IllegalArgumentException ex) {
-        var errorHttpResponseDto = new ErrorHttpResponseDto(HttpStatus.BAD_REQUEST.value(), ex.getLocalizedMessage(), LocalDateTime.now());
+        var errorHttpResponseDto = new ErrorHttpResponseDto(HttpStatus.BAD_REQUEST.value(),
+                ex.getLocalizedMessage(), LocalDateTime.now());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(errorHttpResponseDto);
@@ -61,7 +45,8 @@ public class UserControllerAdvice {
 
     @ExceptionHandler(value = {ConstraintViolationException.class})
     public ResponseEntity<ErrorHttpResponseDto> handleConstraintViolationException(ConstraintViolationException ex) {
-        var errorHttpResponseDto = new ErrorHttpResponseDto(HttpStatus.BAD_REQUEST.value(), ex.getLocalizedMessage(), LocalDateTime.now());
+        var errorHttpResponseDto = new ErrorHttpResponseDto(HttpStatus.BAD_REQUEST.value(),
+                ex.getLocalizedMessage(), LocalDateTime.now());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(errorHttpResponseDto);

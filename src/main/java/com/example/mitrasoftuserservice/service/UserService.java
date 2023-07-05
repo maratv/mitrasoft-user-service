@@ -14,18 +14,14 @@ public interface UserService {
 
     List<User> getAllUsers();
 
-    Optional<User> getUserByEmail(String email);
+    User getUserByEmail(String email);
 
     User createUser(UserDto userDto);
 
-    Optional<User> deleteUser(String email);
+    void deleteUser(String email);
 
-    Optional<User> editUser(String email, UserDto userDto);
+    User editUser(String email, UserDto userDto);
 
-    Optional<User> changeRole(String email, UserRole userRole);
-
-    UserRole getRole(String email);
-
-
+    User changeRole(String email, UserRole userRole);
 
 }

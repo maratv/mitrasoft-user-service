@@ -4,7 +4,6 @@ import com.example.mitrasoftuserservice.domain.UserRole;
 import com.example.mitrasoftuserservice.dto.UserAuthDto;
 import com.example.mitrasoftuserservice.domain.User;
 import com.example.mitrasoftuserservice.dto.UserDto;
-import com.example.mitrasoftuserservice.exception.SourceNotFoundException;
 import com.example.mitrasoftuserservice.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -12,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController
@@ -33,13 +31,7 @@ public class UserController {
 
     @GetMapping("/get/{email}")
     public ResponseEntity<?> getUserByEmail(@PathVariable String email) {
-        Optional<User> optionalUser = userService.getUserByEmail(email);
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-            user.setPassword("***");
-            return ResponseEntity.ok(user);
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("user with email '" + email + "' not found");
+        return ResponseEntity.ok(userService.getUserByEmail(email));
     }
 
     @PostMapping()
@@ -48,38 +40,20 @@ public class UserController {
     }
 
     @DeleteMapping("/delete/{email}")
-    public ResponseEntity<Void> deleteUser(@PathVariable String email) {
-        Optional<User> optionalUser = userService.deleteUser(email);
-        if (optionalUser.isPresent()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.notFound().build();
+    public ResponseEntity<?> deleteUser(@PathVariable String email) {
+        userService.deleteUser(email);
+        return ResponseEntity.noContent().build();
+
     }
 
     @PostMapping("/update/{email}")
     public ResponseEntity<?> update(@PathVariable String email, @RequestBody UserDto userDto) {
-        Optional<User> optionalUser = userService.editUser(email, userDto);
-        return optionalUser
-                .map(ResponseEntity::ok)
-                .orElseThrow(() -> new SourceNotFoundException("User with email '" + email + "' not found"));
+        return ResponseEntity.ok(userService.editUser(email, userDto));
     }
 
     @PostMapping("/role/{email}")
     public ResponseEntity<?> changeRole(@PathVariable String email, @RequestBody UserRole userRole) {
-        Optional<User> optionalUser = userService.changeRole(email, userRole);
-        return optionalUser
-                .map(ResponseEntity::ok)
-                .orElseThrow(() ->  new SourceNotFoundException("User with email '" + email + "' not found"));
+        return ResponseEntity.ok(userService.changeRole(email, userRole));
+
     }
-
-//    @GetMapping("/getrole/{email}")
-//    public ResponseEntity<?> changeRole(@PathVariable String email) {
-//        return ResponseEntity.ok(userService.getRole(email));
-//    }
-
-
-//    @ExceptionHandler(SourceNotFoundException.class)
-//    public ResponseEntity<String> handleResourceNotFoundException(SourceNotFoundException ex) {
-//        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
-//    }
 }
