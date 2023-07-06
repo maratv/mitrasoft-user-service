@@ -1,18 +1,17 @@
 spring:
   flyway:
     enabled: true
+
   datasource:
     driver-class-name: org.postgresql.Driver
     username: postgres
     password: postgres
     url: jdbc:postgresql://localhost:5432/mitra
-  application:
-    name: MitraSoftUserService
 
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: validate
+    show-sql: false
 
 server:
   port: 8081
-

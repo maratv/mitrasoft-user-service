@@ -14,11 +14,11 @@ import java.time.LocalDate;
 @Builder
 @Data
 @Entity
-@Table(name = "USERS")
+@Table(name = "users")
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(unique = true, nullable = false)

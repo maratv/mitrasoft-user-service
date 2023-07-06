@@ -6,7 +6,6 @@ import com.example.mitrasoftuserservice.domain.User;
 import com.example.mitrasoftuserservice.dto.UserDto;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface UserService {
 
